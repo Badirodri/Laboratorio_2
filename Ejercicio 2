@@ -20,3 +20,63 @@ Cout <= (Cin and (A xor B)) or (A and B);
 S <= (A xor B) xor Cin;
 end Behavioral;
 
+entity Sumador4bits is
+ port(
+  A    : in std_logic_vector(3 downto 0);
+  B    : in std_logic_vector(3 downto 0);
+  Cin   :  in std_logic;
+  Cout : out std_logic;
+  S    : out std_logic_vector(3 downto 0)
+ );
+end Sumador4bits;
+
+architecture Behavioral of Sumador4bits is
+
+ COMPONENT Sumador
+ PORT(
+  A : IN std_logic;
+  B : IN std_logic;
+  Cin : IN std_logic;          
+  Cout : OUT std_logic;
+  S : OUT std_logic
+  );
+ END COMPONENT;
+ 
+signal c1 : std_logic;
+signal c2 : std_logic;
+signal c3 : std_logic;
+ 
+begin
+ U1: Sumador PORT MAP(
+  A => A(0),
+  B => B(0),
+  Cin => Cin,
+  Cout => c1,
+  S => S(0)
+ );
+ 
+ U2: Sumador PORT MAP(
+  A => A(1),
+  B => B(1),
+  Cin => c1,
+  Cout => c2,
+  S => S(1)
+ );
+ 
+ U3: Sumador PORT MAP(
+  A => A(2),
+  B => B(2),
+  Cin => c2,
+  Cout => c3,
+  S => S(2)
+ );
+ 
+ U4: Sumador PORT MAP(
+  A => A(3),
+  B => B(3),
+  Cin => c3,
+  Cout => Cout,
+  S => S(3)
+ );
+end Behavioral;
+
