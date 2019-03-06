@@ -1,0 +1,31 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// 
+// 
+//////////////////////////////////////////////////////////////////////////////////
+module SlowClock(clk, reset, clklento);
+input clk, reset;
+output wire clklento;
+
+reg clklento1 = 1'b0;
+reg [27:0] counter;
+
+always@(posedge reset or posedge clk)
+begin
+    if (reset == 1'b1)//0
+        begin
+            clklento1 <= 0;
+            counter <= 0;
+        end
+    else
+        begin
+            counter <= counter + 1;
+            if ( counter >= 25_000_000)
+                begin
+                    counter <= 0;
+                    clklento1 <= ~clklento1;
+                end
+        end
+end
+assign clklento = clklento1;
+endmodule  
