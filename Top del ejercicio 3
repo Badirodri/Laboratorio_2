@@ -1,0 +1,58 @@
+//Top del programa
+
+`timescale 1ns / 1ps
+
+module counter(
+    input  clk,
+    input  reset,
+    input  clk_enable, 
+    output wire [6:0] sseg,
+    output wire an,
+    output wire [6:0] anoff    //output wire [2:0] q
+    );
+   wire clklento;
+   reg anodo = 1'b0;
+   //reg [2:0] counter;
+   wire clk_signal;
+   wire clk_signal_out;
+   reg clk_reg;  
+   reg [6:0] anodoapagado = 1'b1;  
+   
+   always @*
+   begin
+       if (clk_enable == 1)
+       clk_reg = clk;
+       else 
+       clk_reg = clk; //0
+   end
+   assign clk_signal = clk_reg;
+  
+   wire [3:0] hex;
+   /*assign hex[3] = 1'b0; 
+   assign hex[2:0] = q[2:0]; */
+   
+   // llamo componente (deco) 
+   SlowClock U21
+   (.clk(clk), .reset(reset), .clklento(clklento)); 
+   //clk_signal
+   
+   deco7seg U0
+   ( .clk(clk), .data(hex), .segments(sseg)); 
+   
+   ClkDivider U1
+   ( .clklento(clklento), .rst(reset), .count(hex));
+    
+   
+   /*always @(posedge clk_signal_out, posedge reset)
+   //always @(posedge clk_signal, posedge reset)
+       begin
+           if (reset)
+              counter <= 8'b00000000;
+           else 
+              counter <= counter + 1'b1;
+        end
+    
+    assign q = counter; */
+    assign anoff = anodoapagado;
+    assign an = anodo;     
+endmodule
