@@ -1,9 +1,9 @@
 module Deco(
-    input [3:0] Entradas, //4 Bits
-    output [6:0] Salidas, //7 Bits de salida
-    output Anodo
-    );                                         //gfedcba_forma en el 7 segmentos 
-       assign Salidas = (Entradas==4'b0000) ? 7'b1000000:
+    input [3:0] Entradas, //Se definen 4 Bits
+    output [6:0] Salidas, //Se definen 7 Bits de salida
+    output Anodo //Se define una salida para el anodo comun de los displays asignada a VCC
+    );                                         //gfedcba_forma en el 7 segmentos Logica negativa 1=Apagado 0=Encendido por ser anodo comun
+       assign Salidas = (Entradas==4'b0000) ? 7'b1000000: //Conjunto de comparaciones, segun la entrada asi se van a encender los segmentos del Display
                         (Entradas==4'b0001) ? 7'b1111001:
                         (Entradas==4'b0010) ? 7'b0100100:
                         (Entradas==4'b0011) ? 7'b0110000:
@@ -18,8 +18,8 @@ module Deco(
                         (Entradas==4'b1100) ? 7'b1000110:
                         (Entradas==4'b1101) ? 7'b0100001:
                         (Entradas==4'b1110) ? 7'b0000110:
-                        (Entradas==4'b1111) ? 7'b0001110:7'b0000000; //En caso de algo diferente retorna un 0 en 7 segmentos
+                        (Entradas==4'b1111) ? 7'b0001110:7'b0000000; //En caso de que la combinacion no exista retorna un 0 en en el Display
                        
                         
-         assign Anodo =1'b1;
-endmodule
+         assign Anodo =1'b1;//Se asigna a VCC
+endmodule //Finalizacion de la implementacion
