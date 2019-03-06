@@ -1,0 +1,193 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 06.03.2019 12:24:52
+// Design Name: 
+// Module Name: Deco_test
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module Deco_test();
+reg [3:0] Entradas;//Se definen los 4 bits de entrada
+wire [6:0] Salidas;//Se definen los 6 bits de salida
+sevenseg DUT(Entradas,Salidas);//Creacion del DUT para el proyecto
+initial
+    begin
+  
+  // Primera condicion para el 0
+    Entradas = 4'b0000;   #50;//Espera 50ns
+      if(Salidas== 7'b0000001) begin
+        $display("0000 - PASA");
+	end
+		else
+			begin
+             $display("Prueba 0000 - Error");
+			end		
+      
+    //Segunda condicion para el 1
+      Entradas = 4'b0001;  #50;//Espera 50ns
+       if(Salidas == 7'b1001111) begin
+         $display("0001 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 0001 - Error");
+			end	
+			
+ // Tercer condicion para el 2
+      Entradas = 4'b0010;  #50;//Espera 50ns
+       if(Salidas == 7'b0010010) begin
+         $display("0010 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 0010 - Error");
+			end
+
+ // Cuarta condicion para el 3
+      Entradas = 4'b0011; #50;//Espera 50ns
+       if(Salidas == 7'b0000110) begin
+         $display("0011 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 0011 - Error");
+			end
+			
+ // Quinta condicion para el 4
+      Entradas = 4'b0100;  #50;//Espera 50ns
+       if(Salidas== 7'b1001100) begin
+         $display("0100 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 0100 - Error");
+			end			
+
+// Sexta condicion para el 5
+      Entradas = 4'b0101;      #50;//Espera 50ns
+       if(Salidas == 7'b0100100) begin
+         $display("0101 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 0101 - Error");
+			end					
+
+// setima condicion para el 6
+      Entradas = 4'b0110;          #50;//Espera 50ns
+       if(Salidas == 7'b0100000) begin
+         $display("0110 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 0110 - Error");
+			end	
+
+// Octava condicion para el 7
+      Entradas = 4'b0111;      #50;//Espera 50ns
+       if(Salidas == 7'b0001111) begin
+         $display("0111 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 0111 - Error");
+			end	
+			
+//Novena condicion para el 8
+      Entradas = 4'b1000;      #50;//Espera 50ns
+       if(Salidas == 7'b000000) begin
+         $display("1000 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 1000 - Error");
+			end	
+
+// Decima condicion para 9
+      Entradas = 4'b1001;  #50;//Espera 50ns
+       if(Salidas == 7'b0001100) begin
+         $display("1001 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 1001 - Error");
+			end	
+
+// Condicion 11 para A
+      Entradas = 4'b1010;   #50;//Espera 50ns
+       if(Salidas == 7'b0001000) begin
+         $display("1001 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 1001 - Error");
+			end		
+
+// Condicion 12 para B
+      Entradas = 4'b1011;  #50;//Espera 50ns
+       if(Salidas == 7'b1100000) begin
+         $display("1011 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 1011 - Error");
+			end	
+			
+			
+// Condicion 13  para C
+      Entradas = 4'b1100;      #50;//Espera 50ns
+       if(Salidas == 7'b0110001) begin
+         $display("1100 - PASA");
+	end
+		else
+			begin
+              $display("Caso de prueba 1100 - FALLA");
+			end
+		
+			
+// Condicion 14 para D
+      Entradas = 4'b1101; #50;//Espera 50ns
+       if(Salidas == 7'b1000010) begin
+         $display("1100 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 1100 - Error");
+			end	
+			
+// Condicion 15 para E
+      Entradas = 4'b1110; #50;//Espera 50ns
+       if(Salidas == 7'b0110000) begin
+        $display("1101 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 1101 - Error");
+			end				
+			
+// Condicion 16 para F
+      Entradas = 4'b1111; #50;//Espera 50ns
+       if(Salidas == 7'b0111000) begin
+         $display("1111 - PASA");
+	end
+		else
+			begin
+              $display("Prueba 1111 - Error");
+			end					
+
+end
+endmodule
