@@ -2,17 +2,19 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
  
-ENTITY Sumador_Completo_tb IS
-END Sumador_Completo_tb;
+ENTITY Sumador_Completo_Display_TB IS
+END Sumador_Completo_Display_TB;
  
-ARCHITECTURE behavior OF Sumador_Completo_tb  IS
+ARCHITECTURE behavior OF Sumador_Completo_Display_TB  IS
     -- Component Declaration for the Unit Under Test (UUT)
-    COMPONENT Sumador_Completo
+    COMPONENT Sumador_Completo_Display
     PORT(
          A : IN  std_logic_vector(3 downto 0);
          B : IN  std_logic_vector(3 downto 0);
          Cin : IN  std_logic;
-         S : OUT  std_logic_vector(3 downto 0);
+         Display : OUT  std_logic_vector(6 downto 0);
+         an : IN std_logic;
+         anodo : OUT std_logic;
          Cout : OUT  std_logic
         );
     END COMPONENT;
@@ -22,24 +24,29 @@ ARCHITECTURE behavior OF Sumador_Completo_tb  IS
    signal B : std_logic_vector(3 downto 0) := (others => '0');
    signal Cin : std_logic := '0';
    --Outputs
-   signal S : std_logic_vector(3 downto 0);
+   signal display : std_logic_vector(6 downto 0);
    signal Cout : std_logic;
+   signal anodo : std_logic;
+   signal an: std_logic;
  
 BEGIN
-   -- Instantiate the Unit Under Test (UUT)
-   uut: Sumador_Completo PORT MAP (
+   -- Instanciar la unidad de análisis bajo estudio (UUT)
+   uut: Sumador_Completo_Display PORT MAP (
           A => A,
           B => B,
           Cin => Cin,
-          S => S,
-          Cout => Cout
+          Display => display,
+          Cout => Cout,
+          anodo => anodo,
+          an => an
         );
  
-   stim_proc: process -- Stimulus process
+   stim_proc: process -- Proceso de estímulos
    begin
  
       for i in std_logic range '0' to '1' loop
          Cin <= i;
+         an <= i;
          for j in 0 to 15 loop
             A <= std_logic_vector(to_unsigned(j, 4));
             for k in 0 to 15 loop
