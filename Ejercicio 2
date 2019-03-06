@@ -1,3 +1,5 @@
+------- Módulo para el Sumador Completo de 1 bit ---------------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL; 
 use IEEE.STD_LOGIC_unsigned.ALL;
@@ -20,17 +22,71 @@ Cout <= (Cin and (A xor B)) or (A and B);
 S <= (A xor B) xor Cin;
 end Behavioral;
 
-entity Sumador4bits is
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+------- Módulo para el DECO de 4 bits a DISPLAY de 7 segmentos -------------------------------------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL; 
+use IEEE.STD_LOGIC_unsigned.ALL;
+
+entity Siete_Segmentos is
+    PORT (
+        entrada: IN  STD_LOGIC_VECTOR(3 downto 0);
+        salida : OUT STD_LOGIC_VECTOR(6 downto 0);
+        an : IN STD_LOGIC;
+        anodo : OUT STD_LOGIC 
+    );
+end Siete_Segmentos;
+  
+architecture Behavioral of Siete_Segmentos is
+begin
+    visualizador: process (entrada) begin
+        case entrada is
+            when "0000" =>  salida <= b"1000000"; -- 0
+            when "0001" =>  salida <= b"1111001"; -- 1
+            when "0010" =>  salida <= b"0100100"; -- 2
+            when "0011" =>  salida <= b"0110000"; -- 3
+            when "0100" =>  salida <= b"0011001"; -- 4
+            when "0101" =>  salida <= b"0010010"; -- 5
+            when "0110" =>  salida <= b"0000010"; -- 6
+            when "0111" =>  salida <= b"1111000"; -- 7
+            when "1000" =>  salida <= b"0000000"; -- 8
+            when "1001" =>  salida <= b"0011000"; -- 9
+            when "1010" =>  salida <= b"0001000"; -- A
+            when "1011" =>  salida <= b"0000011"; -- B
+            when "1100" =>  salida <= b"1000110"; -- C
+            when "1101" =>  salida <= b"0100001"; -- D
+            when "1110" =>  salida <= b"0000110"; -- E
+            when "1111" =>  salida <= b"0001110"; -- F
+            when others   =>  salida <= b"1111111"; -- Nada, retorna un 0
+          end case;
+        end process;
+      anodo <= an;
+    end behavioral;
+    
+----------------------------------------------------------------------------------------------------------------------------------------
+
+------- TOP Model para Sumador Completo de 4 bits y DISPLAY de 7 segmentos -------------------------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL; 
+use IEEE.STD_LOGIC_unsigned.ALL;
+
+entity Sumador_Completo_Display is
  port(
   A    : in std_logic_vector(3 downto 0);
   B    : in std_logic_vector(3 downto 0);
   Cin   :  in std_logic;
+  an : in std_logic;
   Cout : out std_logic;
-  S    : out std_logic_vector(3 downto 0)
+  Display : out std_logic_vector(6 downto 0);
+  anodo: out std_logic
  );
-end Sumador4bits;
+end Sumador_Completo_Display;
 
-architecture Behavioral of Sumador4bits is
+architecture Behavioral of Sumador_Completo_Display is
 
  COMPONENT Sumador
  PORT(
@@ -42,17 +98,27 @@ architecture Behavioral of Sumador4bits is
   );
  END COMPONENT;
  
+ component Siete_Segmentos
+ PORT(
+  entrada: in std_logic_vector(3 downto 0);
+  salida: out std_logic_vector(6 downto 0);
+  an : in std_logic;
+  anodo : out std_logic
+  );
+ END component;
+  
 signal c1 : std_logic;
 signal c2 : std_logic;
 signal c3 : std_logic;
- 
+signal suma : std_logic_vector(3 downto 0);
+
 begin
  U1: Sumador PORT MAP(
   A => A(0),
   B => B(0),
   Cin => Cin,
   Cout => c1,
-  S => S(0)
+  S => suma(0)
  );
  
  U2: Sumador PORT MAP(
@@ -60,7 +126,7 @@ begin
   B => B(1),
   Cin => c1,
   Cout => c2,
-  S => S(1)
+  S => suma(1)
  );
  
  U3: Sumador PORT MAP(
@@ -68,7 +134,7 @@ begin
   B => B(2),
   Cin => c2,
   Cout => c3,
-  S => S(2)
+  S => suma(2)
  );
  
  U4: Sumador PORT MAP(
@@ -76,7 +142,17 @@ begin
   B => B(3),
   Cin => c3,
   Cout => Cout,
-  S => S(3)
+  S => suma(3)
  );
+ 
+ U5: Siete_Segmentos PORT MAP(
+    entrada => suma,
+    salida => Display,
+    an => an,
+    anodo => anodo
+   );
+   
 end Behavioral;
+
+----------------------------------------------------------------------------------------------------------------------------------------
 
