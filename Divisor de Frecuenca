@@ -1,0 +1,32 @@
+/*Modulo para la creacion de un divisor de reloj*/
+
+`timescale 1ns / 1ps
+
+module ClkDivider (
+    input clklento,
+    input rst,
+    output wire [3:0] count
+    );
+reg [3:0] count1;
+parameter max_count = 4'd6;
+
+
+always @(posedge clklento or posedge rst)
+      begin
+          if (rst)
+             begin
+                count1 <= 1'b0;
+             end
+          else
+             if (count1== (max_count))
+                 begin 
+                    count1 <= 1'b0;
+                 end
+             else
+                 begin
+                    count1 <= count1+1;
+                 end 
+     end
+     
+      assign count = count1;
+endmodule
