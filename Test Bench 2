@@ -1,0 +1,53 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+ 
+ENTITY Sumador_Completo_tb IS
+END Sumador_Completo_tb;
+ 
+ARCHITECTURE behavior OF Sumador_Completo_tb  IS
+    -- Component Declaration for the Unit Under Test (UUT)
+    COMPONENT Sumador_Completo
+    PORT(
+         A : IN  std_logic_vector(3 downto 0);
+         B : IN  std_logic_vector(3 downto 0);
+         Cin : IN  std_logic;
+         S : OUT  std_logic_vector(3 downto 0);
+         Cout : OUT  std_logic
+        );
+    END COMPONENT;
+ 
+   --Inputs
+   signal A : std_logic_vector(3 downto 0) := (others => '0');
+   signal B : std_logic_vector(3 downto 0) := (others => '0');
+   signal Cin : std_logic := '0';
+   --Outputs
+   signal S : std_logic_vector(3 downto 0);
+   signal Cout : std_logic;
+ 
+BEGIN
+   -- Instantiate the Unit Under Test (UUT)
+   uut: Sumador_Completo PORT MAP (
+          A => A,
+          B => B,
+          Cin => Cin,
+          S => S,
+          Cout => Cout
+        );
+ 
+   stim_proc: process -- Stimulus process
+   begin
+ 
+      for i in std_logic range '0' to '1' loop
+         Cin <= i;
+         for j in 0 to 15 loop
+            A <= std_logic_vector(to_unsigned(j, 4));
+            for k in 0 to 15 loop
+               B <= std_logic_vector(to_unsigned(k, 4));
+               wait for 10 ns;
+            end loop;
+         end loop;
+      end loop;
+ 
+   end process;
+END;
